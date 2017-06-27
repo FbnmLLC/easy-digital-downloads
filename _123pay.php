@@ -109,7 +109,7 @@ function verify() {
 		curl_close( $ch );
 		$result = json_decode( $response );
 
-		if ( $result->status && $_SESSION['RefNum'] == $result->RefNum ) {
+		if ( $result->status && $_SESSION['RefNum'] == $RefNum ) {
 			edd_update_payment_status( $payment, 'publish' );
 		} else {
 			edd_update_payment_status( $payment, 'failed' );
