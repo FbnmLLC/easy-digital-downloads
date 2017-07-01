@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: 123PAY.IR - Easy Digital Downloads
- * Description: پلاگین پرداخت ، سامانه پرداخت اینترنتی یک دو سه پی برای Easy Digital Downloads
+ * Description: پلاگین پرداخت ، سامانه پرداخت یک دو سه پی برای Easy Digital Downloads
  * Plugin URI: https://123pay.ir
  * Author: تیم فنی یک دو سه پی
  * Author URI: https://123pay.ir
@@ -18,7 +18,7 @@ add_filter( 'edd_rial_currency_filter_before', 'edd_rial', 10, 3 );
 
 function add_gateway( $gateways ) {
 	$gateways['_123pay'] = array(
-		'admin_label'    => 'سامانه پرداخت اینترنتی یک دو سه پی',
+		'admin_label'    => 'سامانه پرداخت یک دو سه پی',
 		'checkout_label' => 'پرداخت با یک دو سه پی'
 	);
 
@@ -126,7 +126,7 @@ function add_settings( $settings ) {
 	$_123pay_settings = array(
 		array(
 			'id'   => '_123pay_settings',
-			'name' => '<strong>پیکربندی سامانه پرداخت اینترنتی یک دو سه پی</strong>',
+			'name' => '<strong>پیکربندی سامانه پرداخت یک دو سه پی</strong>',
 			'desc' => 'پیکربندی یک دو سه پی با تنظیمات فروشگاه',
 			'type' => 'header'
 		),
