@@ -53,7 +53,7 @@ function process_payment( $purchase_data ) {
 
 		$merchant_id  = $edd_options['_123pay_merchant_id'];
 		$amount       = $payment_data['price'];
-		$callback_url = add_query_arg( 'order', '_123pay', get_permalink( $edd_options['success_page'] ) );
+		$callback_url = urlencode( add_query_arg( 'order', '_123pay', get_permalink( $edd_options['success_page'] ) ) );
 
 		@session_start();
 
