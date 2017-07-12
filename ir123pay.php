@@ -17,7 +17,7 @@ add_filter( 'edd_rial_currency_filter_after', 'edd_rial', 10, 3 );
 add_filter( 'edd_rial_currency_filter_before', 'edd_rial', 10, 3 );
 
 function add_gateway( $gateways ) {
-	$gateways['_123pay'] = array(
+	$gateways['ir123pay'] = array(
 		'admin_label'    => 'سامانه پرداخت یک دو سه پی',
 		'checkout_label' => 'پرداخت با یک دو سه پی'
 	);
@@ -31,7 +31,7 @@ function cc_form() {
 	do_action( 'cc_form_action' );
 }
 
-add_filter( 'edd__123pay_cc_form', 'cc_form' );
+add_filter( 'edd_ir123pay_cc_form', 'cc_form' );
 
 function process_payment( $purchase_data ) {
 	global $edd_options;
@@ -48,12 +48,12 @@ function process_payment( $purchase_data ) {
 	);
 	$payment      = edd_insert_payment( $payment_data );
 	if ( $payment ) {
-		$_SESSION['_123pay_payment'] = $payment;
-		$_SESSION['_123pay_fi']      = $payment_data['price'];
+		$_SESSION['ir123pay_payment'] = $payment;
+		$_SESSION['ir123pay_fi']      = $payment_data['price'];
 
-		$merchant_id  = $edd_options['_123pay_merchant_id'];
+		$merchant_id  = $edd_options['ir123pay_merchant_id'];
 		$amount       = $payment_data['price'];
-		$callback_url = urlencode( add_query_arg( 'order', '_123pay', get_permalink( $edd_options['success_page'] ) ) );
+		$callback_url = urlencode( add_query_arg( 'order', 'ir123pay', get_permalink( $edd_options['success_page'] ) ) );
 
 		@session_start();
 
@@ -89,7 +89,7 @@ function process_payment( $purchase_data ) {
 	}
 }
 
-add_action( 'edd_gateway__123pay', 'process_payment' );
+add_action( 'edd_gateway_ir123pay', 'process_payment' );
 
 function verify() {
 	global $edd_options;
@@ -98,8 +98,8 @@ function verify() {
 	$RefNum = $_REQUEST['RefNum'];
 
 	if ( $State == 'OK' ) {
-		$payment     = $_SESSION['_123pay_payment'];
-		$merchant_id = $edd_options['_123pay_merchant_id'];
+		$payment     = $_SESSION['ir123pay_payment'];
+		$merchant_id = $edd_options['ir123pay_merchant_id'];
 		$ch          = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, 'https://123pay.ir/api/v1/verify/payment' );
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, "merchant_id=$merchant_id&RefNum=$RefNum" );
@@ -123,15 +123,15 @@ function verify() {
 add_action( 'init', 'verify' );
 
 function add_settings( $settings ) {
-	$_123pay_settings = array(
+	$ir123pay_settings = array(
 		array(
-			'id'   => '_123pay_settings',
+			'id'   => 'ir123pay_settings',
 			'name' => '<strong>پیکربندی سامانه پرداخت یک دو سه پی</strong>',
 			'desc' => 'پیکربندی یک دو سه پی با تنظیمات فروشگاه',
 			'type' => 'header'
 		),
 		array(
-			'id'   => '_123pay_merchant_id',
+			'id'   => 'ir123pay_merchant_id',
 			'name' => 'کد پذیرنده ',
 			'desc' => '',
 			'type' => 'text',
@@ -139,7 +139,7 @@ function add_settings( $settings ) {
 		)
 	);
 
-	return array_merge( $settings, $_123pay_settings );
+	return array_merge( $settings, $ir123pay_settings );
 }
 
 add_filter( 'edd_settings_gateways', 'add_settings' );
