@@ -94,11 +94,10 @@ add_action( 'edd_gateway_ir123pay', 'process_payment' );
 function verify() {
 	global $edd_options;
 
-	$State  = $_REQUEST['State'];
-	$RefNum = $_REQUEST['RefNum'];
-
+	$State   = $_REQUEST['State'];
+	$RefNum  = $_REQUEST['RefNum'];
+	$payment = $_SESSION['ir123pay_payment'];
 	if ( $State == 'OK' ) {
-		$payment     = $_SESSION['ir123pay_payment'];
 		$merchant_id = $edd_options['ir123pay_merchant_id'];
 		$ch          = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, 'https://123pay.ir/api/v1/verify/payment' );
@@ -117,6 +116,11 @@ function verify() {
 			wp_redirect( get_permalink( $edd_options['failure_page'] ) );
 			exit();
 		}
+	} else {
+		edd_update_payment_status( $payment, 'failed' );
+		edd_insert_payment_note( $payment, 'پرداخت ناموفق' );
+		wp_redirect( get_permalink( $edd_options['failure_page'] ) );
+		exit();
 	}
 }
 
